@@ -1,28 +1,34 @@
-import { useState } from 'react'
+import React, { useEffect } from 'react';
+import Hero from './components/Hero.jsx';
+import GrowthSections from './components/GrowthSections.jsx';
+import PricingAndProcess from './components/PricingAndProcess.jsx';
+import BookingFaqFooter from './components/BookingFaqFooter.jsx';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  // Smooth scroll for in-page anchors
+  useEffect(() => {
+    const handler = (e) => {
+      const target = e.target.closest('a[href^="#"]');
+      if (!target) return;
+      const id = target.getAttribute('href')?.slice(1);
+      if (!id) return;
+      const el = document.getElementById(id);
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    document.addEventListener('click', handler);
+    return () => document.removeEventListener('click', handler);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+    <main className="min-h-screen bg-white antialiased">
+      <Hero />
+      <GrowthSections />
+      <PricingAndProcess />
+      <BookingFaqFooter />
+    </main>
+  );
+};
 
-export default App
+export default App;
